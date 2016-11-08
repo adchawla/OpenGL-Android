@@ -24,6 +24,8 @@ import static android.opengl.GLES20.glClearColor;
 import static android.opengl.GLES20.glDrawArrays;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glGetAttribLocation;
+import static android.opengl.GLES20.glGetUniformLocation;
+import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
@@ -53,6 +55,10 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 
     private static final String A_COLOR = "a_Color";
     private int aColorLocation;
+
+    private static final String U_MATRIX = "u_Matrix";
+    private int uMatrixLocation;
+    private final float[] projectionMatrix = new float[16];
 
     public AirHockeyRenderer(Context context) {
         this.context = context;
@@ -109,6 +115,9 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
         // get the location of a_Color attribute
         aColorLocation = glGetAttribLocation(program, A_COLOR);
 
+        // get the location of u_Matrix uniform
+        uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
+
         glEnableVertexAttribArray(aPositionLocation);
         glEnableVertexAttribArray(aColorLocation);
 
@@ -124,13 +133,25 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl10, int i, int i1) {
-        glViewport(0, 0, i, i1);
+    public void onSurfaceChanged(GL10 gl10, int width, int height) {
+        glViewport(0, 0, width, height);
+        final float aspectRatio = width > height ?
+                (float) width / (float) height :
+                (float) height / (float) width;
+
+        if (width > height) {
+            // Landscape
+            android.opengl.Matrix.orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f);
+        } else {
+            android.opengl.Matrix.orthoM(projectionMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+        }
     }
 
     @Override
     public void onDrawFrame(GL10 gl10) {
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUniformMatrix4fv(uMatrixLocation, 1, false, projectionMatrix, 0);
 
         // Draw the Table
         glDrawArrays(GL_TRIANGLE_FAN, 0, 6);
