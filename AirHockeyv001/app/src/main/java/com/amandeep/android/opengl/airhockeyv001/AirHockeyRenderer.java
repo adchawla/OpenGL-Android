@@ -68,19 +68,19 @@ public class AirHockeyRenderer implements GLSurfaceView.Renderer {
 
                 // Triangle Fan
                 0f,    0f,   1f,   1f,   1f,
-                -0.5f, -0.5f, 0.7f, 0.7f, 0.7f,
-                0.5f, -0.5f, 0.7f, 0.7f, 0.7f,
-                0.5f,  0.5f, 0.7f, 0.7f, 0.7f,
-                -0.5f,  0.5f, 0.7f, 0.7f, 0.7f,
-                -0.5f, -0.5f, 0.7f, 0.7f, 0.7f,
+                -0.5f, -0.8f, 0.7f, 0.7f, 0.7f,
+                0.5f, -0.8f, 0.7f, 0.7f, 0.7f,
+                0.5f,  0.8f, 0.7f, 0.7f, 0.7f,
+                -0.5f,  0.8f, 0.7f, 0.7f, 0.7f,
+                -0.5f, -0.8f, 0.7f, 0.7f, 0.7f,
 
                 // Line 1
                 -0.5f, 0f, 1f, 0f, 0f,
                 0.5f, 0f, 1f, 0f, 0f,
 
                 // Mallets
-                0f, -0.25f, 0f, 0f, 1f,
-                0f,  0.25f, 1f, 0f, 0f
+                0f, -0.4f, 0f, 0f, 1f,
+                0f,  0.4f, 1f, 0f, 0f
         };
 
         // move the data from the java side to the native side
